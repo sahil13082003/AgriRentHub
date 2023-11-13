@@ -1,0 +1,15 @@
+* {
+    font-family: var(--rocksalt-font);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.container{
+   position: relative;
+   top:40px
+}

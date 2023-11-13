@@ -1,0 +1,414 @@
+:root {
+    --color-white: #fff;
+    --primary-color: #14213D;
+    --color-black: #000;
+    --roboto-font: 'Roboto Slab', serif;
+    --rocksalt-font: 'bookman old style', cursive;
+}
+.mediumGreenText{
+    color: #10a01e;;
+
+}
+.mediumGreenBg{
+    background-color: #10a01e;
+}
+
+* {
+    font-family: var(--rocksalt-font);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-black);
+    font-size: 1.2rem;
+}
+
+/********* NAVIGATION BAR *********/
+.topbar{
+    background-color: #5cf16b;
+    height: 25px;
+    margin: 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.topbar p{
+    margin-left: 40%;
+    display: block;
+    font-size:small;
+    font-weight: 500;
+}
+
+
+.navbar .logo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar .logo p{
+    position: relative;
+    top:40px;
+    font-size:large ;
+    font-weight: bold;
+    color:#175b1e ;
+}
+
+.navbar {
+    display: flex;
+    width: 100%;
+    z-index: 1000;
+    background: #fff;
+    justify-content: space-between;
+    transition: 1.5s;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.navbar .logo a img {
+    width: 90px;
+    height: auto;
+}
+
+.navbar .links {
+    display: flex;
+    gap: 3.4rem;
+    font-weight: 450;
+    position: relative;
+    top: 10px;
+}
+
+.navbar .links li a{
+    color: #10a01e;
+}
+
+/* Responsive Navba */
+
+.menu-button {
+    display: none; 
+}
+
+@media (max-width: 850px) {
+    
+    .navbar .links {
+        display: none; 
+        flex-direction: column;
+        position: absolute;
+        background-color: #fff;
+        top: 55px;
+        right: 0;
+        width: 100%;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .menu-button {
+        display: block; 
+    }
+
+    .menu-button.active {
+        background-color: #fff;
+    }
+
+    .menu-button:hover {
+        cursor: pointer;
+    }
+}
+
+
+
+/* Drop Down */
+
+.user-dropdown-container {
+    position: relative; 
+     display: inline-block;
+    cursor: pointer;
+    margin-right: 55px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.user-dropdown-container .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 400px;
+    margin-right:100px ;
+}
+
+.user-dropdown-container:hover .dropdown-content {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.user-dropdown-container a {
+
+    color: #000;
+    padding: 12px 16px;
+    /* text-decoration: none; */
+    display: block;
+    border-radius: 0; 
+}
+
+
+ /* Slider */
+
+.slider-container {
+    position: relative;
+    top:-30px;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.slide {
+    position: relative;
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide img {
+    width: 98%;
+    height:90%;
+    object-fit:cover;
+}
+
+.slide .slide-content {
+    height: 60px;
+    width: 70%;
+    position: absolute;
+    text-align: center;
+    color: #f4eeee;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.slide .slide-content h1 {
+    font-size: 36px;
+    margin: 10px 0;
+}
+
+.slide .slide-content p {
+    font-size: 15px;
+    margin: 10px 0;
+    font-size:medium ;
+}
+
+.slide .slide-content button {
+    background-color: #398d4e;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 5px 20px;
+}
+
+.slide .slide-content button:hover {
+    background-color: #f3f7f3;
+    color: #000;
+}
+
+.special_text{
+    color: #10a01e;
+    font-weight: 500;
+}
+
+
+/*Features of AgriRentHub*/
+
+ .title {
+    margin-top: 20px;
+    margin-bottom: 20px; 
+   font-family: 'Open Sans', sans-serif;
+   font-size: 30px;
+   text-align: center;
+   color: #10a01e;
+   font-weight: 500;
+}
+
+.service-swipe {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+.service-swipe .s-card img {
+	width: 80px;
+}
+.service-swipe a {
+	padding: 0;
+	margin: 40px 10px;
+}
+.service-swipe .s-card {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: space-around;
+	padding: 20px;
+	align-items: center;
+	text-align: center;
+	width: 350px;
+	height: 200px;
+	border-radius: 5px;
+	cursor: pointer;
+
+}
+.service-swipe .s-card p {
+	color: #101010;
+	font-size: 1.2em;
+	font-family: 'Open Sans',sans-serif;
+
+}
+
+/* Equipment list */
+
+.Equp_list{
+    display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+}
+
+.card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.card h2 {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.card p {
+    font-size: 16px;
+    color: #777;
+}
+
+/*Contact Us Section*/
+
+.back-contact {
+	margin-top: 0px;
+	transform: translateY(-50px);
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+.cc {
+	height: 400px;
+	width: 400px;
+	height: 500px;
+	border-radius: 10px;
+	justify-content: center;
+	box-shadow: 1px 1px 20px rgba(0,0,0,0.4);
+	background: #fff;
+}
+.cc form {
+	margin: 5%;
+	margin-top: 40px;
+	width: 90%;
+	height: 90%;
+}
+.cc form label {
+	position: absolute;
+	color: #2E3D49;
+	font-size: 10px;
+	font-weight: 800;
+}
+.cc form input {
+	padding: 15px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	box-shadow: inset 0 0 5px lightgray;
+	border: 1px solid rgba(0,0,0,0.2);
+	outline: none;
+	color: #2E3D49;
+	font-weight: 600;
+}
+.imp {
+	color: red;
+}
+form textarea {
+	width: 100%;
+	height: 100px;
+	box-shadow: inset 0 0 5px lightgray;
+	border: 1px solid rgba(0,0,0,0.2);
+	border-radius: 5px;
+	outline: none;
+	color: #2E3D49;
+	font-weight: 600;
+	padding: 15px;
+}
+#csubmit {
+	margin-top: 10px; 
+	background: linear-gradient(to right, #36b43d, #33d46b);
+	border-radius: 5px;
+	border-style: none;
+	outline: none;
+	width: 100%;
+	padding: 15px 25px;
+	color: #fff;
+	font-size: 12px;
+	cursor: pointer;
+}
+
+
+/*FOOTER*/
+
+footer {
+	color: #0c0c0c;
+	background: #9df5a6;
+	padding: 50px 0; 
+}
+footer .footer-container {
+	max-width: 1200px;
+	margin: auto;
+	padding: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	/* flex-wrap: wrap-reverse; */
+}
+footer .social-media img{
+	width: 25px;
+}
+footer .logo {
+	width: 180px;
+	color: #fff;
+}
+footer .social-media a{
+	margin-right: 10px;
+	font-size: 22px;
+	text-decoration: none;
+}
+footer .right-col h1{
+	font-size: 26px;
+}
