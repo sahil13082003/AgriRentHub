@@ -7,7 +7,7 @@
 
 body {
     background: #9df5a6;
-    font-family: 'Poppin', sans-serif;
+    font-family: 'bookman old style', cursive;
 }
 
 .container {
@@ -136,4 +136,20 @@ section.faq .question-box .answer p {
     font-size: 14px;
     color: #59636d;
     line-height: 17px;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    section.faq .question-box {
+        width: 100%; 
+    }
+
+    section.faq .question-box .answer {
+        width: 100%;
+        left: 0; 
+    }
 }

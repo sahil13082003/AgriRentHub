@@ -82,46 +82,67 @@ a {
 
 .navbar .links {
     display: flex;
-    gap: 3.4rem;
+    gap: 3rem;
     font-weight: 450;
     position: relative;
-    top: 10px;
+    top: 14px;
 }
 
 .navbar .links li a{
     color: #10a01e;
 }
 
-/* Responsive Navba */
-
 .menu-button {
     display: none; 
 }
 
-@media (max-width: 850px) {
+/* Responsive Navba */
+
+@media screen and (max-width: 910px) {
     
     .navbar .links {
+        padding-bottom: 5px;
         display: none; 
         flex-direction: column;
         position: absolute;
-        background-color: #fff;
-        top: 55px;
-        right: 0;
+        background-color: rgba(249, 246, 246, 0.866);
+        top: 100px;
+        right: 0px;
         width: 100%;
+        padding: 5px 20px; 
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     }
-
-    .menu-button {
-        display: block; 
+    
+    .navbar .links.active {
+        display: flex; 
+        flex-direction: column; 
+        gap: 1rem;
     }
+
 
     .menu-button.active {
-        background-color: #fff;
+        background-color: #e2e2e2;
     }
 
-    .menu-button:hover {
+    .menu-button.active:hover{
+        transition: opacity 0.5s ease;
+        background-color: rgba(255, 255, 255, 0.7);
+        transition: 5s ease;    }
+
+    .menu-button {
+        display: block;
+        background-color: transparent;
+        border: none;
         cursor: pointer;
+        font-size: 24px;
+        color: #333;
+        transition: transform 0.3s ease-in-out;
     }
+    
+    .menu-button:hover {
+        transform: scale(1.1);
+    }
+    
 }
 
 
@@ -154,13 +175,9 @@ a {
 
     color: #000;
     padding: 12px 16px;
-    /* text-decoration: none; */
     display: block;
     border-radius: 0; 
 }
-
-
- /* Slider */
 
 .slider-container {
     position: relative;
@@ -226,7 +243,7 @@ a {
 }
 
 
-/*Features of AgriRentHub*/
+/* /Features of AgriRentHub/ */
 
  .title {
     margin-top: 20px;
@@ -313,7 +330,7 @@ a {
     color: #777;
 }
 
-/*Contact Us Section*/
+/* /Contact Us Section/ */
 
 .back-contact {
 	margin-top: 0px;
@@ -381,7 +398,7 @@ form textarea {
 }
 
 
-/*FOOTER*/
+/* /FOOTER/ */
 
 footer {
 	color: #0c0c0c;

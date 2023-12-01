@@ -112,7 +112,7 @@ mysqli_close($db);
              <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
                  <div class="d-flex align-items-center">
                      <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
-                     <h2 class="fs-2 m-0">Dashboard</h2>
+                     <h2 class="fs-2 m-2">   Admin Dashboard</h2>
                  </div>
 
                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -150,7 +150,7 @@ mysqli_close($db);
                          <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                              <div>
                                  <h3> <span id="totalBookings"><?php echo $totalEquipments; ?></span></h3>
-                                 <p class="fs-5">Total Equpments</p>
+                                 <p class="fs-5">Total Equipments</p>
                              </div>
                              <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
                          </div>
@@ -193,11 +193,9 @@ if (mysqli_num_rows($result) > 0) {
 
     $rowNumber = 1;
     while ($row = mysqli_fetch_assoc($result)) {
-        // Increment the count of owner_id occurrences
         $ownerID = $row['owner_id'];
         $ownerCount[$ownerID] = isset($ownerCount[$ownerID]) ? $ownerCount[$ownerID] + 1 : 1;
 
-        // Calculate the total profit for the farmer
         if (isset($ownerProfit[$ownerID])) {
             $ownerProfit[$ownerID] += $row['total_cost'];
         } else {

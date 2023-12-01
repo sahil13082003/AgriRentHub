@@ -1,7 +1,6 @@
 <?php
    session_start(); 
-   include '../components/Links.php';
-   
+//    include '../components/Links.php';   
 ?>
 
 <!DOCTYPE html>
@@ -12,8 +11,9 @@
     <title>AgroRentHub</title>
     <link rel="stylesheet" href="css/navbar.css">
 </head>
+
 <body>
-    <div class="topbar"> 
+    <div class="topbar">
         <p>Agriculture Equipments Rental System</p>
 
         <!-- <div id="google_translate_element">
@@ -27,54 +27,57 @@
 
 					</script>
 		</div> -->
-	</div>
-        
+    </div>
+
     <header>
         <div class="navbar">
             <div class="logo">
                 <a href="../pages/HomePage.php">
                     <img src="../Images/logo.png" alt="Logo">
                 </a>
-                <a href="../pages/HomePage.php"><p>AgriRentHub</p></a>
+                <a href="../pages/HomePage.php">
+                    <p>AgriRentHub</p>
+                </a>
             </div>
-            
+
             <button class="menu-button" onclick="toggleMenu()">&#9776;</button>
-            
+
             <ul class="links">
                 <li><a href="../pages/HomePage.php">Home</a></li>
                 <li><a href="../pages/Dashboard.php">Dashboard</a></li>
                 <?php if(!isset($_SESSION['email'])) { ?>
-                <li><a href="#Contact">Contact</a></li>
+                <li><a href="#contact">Contact</a></li>
                 <li><a href="../pages/help.php">Help</a></li>
                 <?php }?>
                 <?php if(isset($_SESSION['email'])) { ?>
                 <li>
-                    <a  style="cursor: pointer" data-toggle="modal" data-target="#equipmentModal11">Add Product</a>
+                    <a style="cursor: pointer" data-toggle="modal" data-target="#equipmentModal11">Add Product</a>
                 </li>
                 <?php } ?>
                 <?php if(isset($_SESSION['email'])) { ?>
                 <li><a href="../pages/help.php">Help</a></li>
                 <?php } ?>
             </ul>
-            
+
             <div class="user-dropdown-container position">
                 <?php
-                    if (isset($_SESSION['email'])) {
-                    $user = $_SESSION['uname'];
-                    echo '<div class="dropdown ">';
-                    echo '<button class="btn btn-success font-weight-bold">'. $user .'<i class="fa fa-caret-down"></i></button>';
-                    echo '<div class="dropdown-content">';
-                    echo '<div><a href="../pages/Booking_Details.php">Booking Details</a></div>';
-                    echo '<div><a href="../pages/Booking_Request.php">Booking Request</a></div>';
-                    echo '<div><a href="../backend_php/Logout.php">Log Out</a></div>';
-                    echo '</div>';
-                    echo '</div>';
-                } else {
-                    echo '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">SignIn</button>';
-                }
-                ?>
+    if (isset($_SESSION['email'])) {
+      $user = $_SESSION['uname'];
+      echo '<div class="dropdown ">';
+      echo '<button class="btn btn-success font-weight-bold">'. $user .'<i class="fa fa-caret-down"></i></button>';
+      echo '<div class="dropdown-content">';
+      echo '<div><a href="../pages/Booking_Details.php">Booking Details</a></div>';
+      echo '<div><a href="../pages/Booking_Request.php">Booking Request</a></div>';
+      echo '<div><a href="../backend_php/Logout.php">Log Out</a></div>';
+      echo '</div>';
+      echo '</div>';
+    } else {
+      echo '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">SignIn</button>';
+    }
+    ?>
             </div>
         </div>
+
     </header>
 
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
@@ -122,6 +125,10 @@
             </div>
         </div>
     </div>
+
+
+
+
     <!-- Modal for register in -->
     <div class="modal fade" id="registermodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
@@ -183,7 +190,7 @@
 
 
     <!-- add product -->
-
+    
 
     <?php include '../pages/Add_Product.php' ?>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -193,3 +200,13 @@
 </body>
 
 </html>
+
+<script>
+    function toggleMenu() {
+        const links = document.querySelector('.navbar .links');
+        const menuButton = document.querySelector('.menu-button');
+
+        links.classList.toggle('active');
+        menuButton.classList.toggle('active');
+    }
+    </script>
