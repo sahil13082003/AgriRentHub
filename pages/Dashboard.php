@@ -1,22 +1,32 @@
 <?php
 include '../components/Links.php';
 include '../components/Navbar.php';
-$db = mysqli_connect("localhost", "root", "","farmer") or die("Connection Failed");
+$db = mysqli_connect("localhost", "root", "", "farmer") or die("Connection Failed");
 
-$query = "SELECT * FROM equipment";
+$query = "SELECT DISTINCT equipment.*, purchase_requests.status_owner
+FROM equipment
+LEFT JOIN purchase_requests ON equipment.owner_id = purchase_requests.owner_id
+WHERE purchase_requests.status_owner IS NULL OR purchase_requests.status_owner = 'Accepted'";
+
+
 $result = mysqli_query($db, $query);
 
-$equipmentData = array();
+if (!$result) {
+    die('Error in SQL query: ' . mysqli_error($db));
+}
+
+$equipmentData = array(); 
 
 if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         $equipmentData[] = $row;
     }
+} else {
+    echo 'No equipment data found.';
 }
 
 mysqli_close($db);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,8 +57,7 @@ mysqli_close($db);
 
     .green-text {
     color: green;
-}
-
+    }
 
     .equipment-description {
         max-height: 100px;
@@ -92,31 +101,46 @@ mysqli_close($db);
 <body>
     <h1>Equipment Dashboard</h1>
     <div class="container">
-        <?php foreach ($equipmentData as $equipment) : ?>
-        <div class="equipment-container">
-            <img class="equipment-image" src="../images/<?php echo $equipment['image']; ?>" alt="Equipment Image">
-            <h4><b>Equipment Type:</b> <b class="green-text"><?php echo $equipment['equipment_type']; ?></b></h4>
-            <div class="equipment-description">
-                <p><b>Description:</b> <?php echo $equipment['description']; ?></p>
-            </div>
-            <p><b>Rental Cost:</b></p>
-            <ul>
-                <li>Per Hour: $<?php echo $equipment['rental_cost_per_hour']; ?></li>
-                <li>Per Day: $<?php echo $equipment['rental_cost_per_day']; ?></li>
-            </ul>
-            <?php
-              
-                if (isset($_SESSION['email']) && $_SESSION['email'] === $equipment['owner_id']) {
-                    echo '<div class="alert alert-info" role="alert">';
-                    echo 'You are viewing your own equipment.';
-                    echo '</div>';
-                } else {
-                    echo '<a class="btn btn-success" href="Book_Now.php?id=' . $equipment['owner_id']  . '">Book Now</a>';
-
-                }
-            ?>
+    <?php foreach ($equipmentData as $equipment) : ?>
+    <div class="equipment-container">
+        <img class="equipment-image" src="../images/<?php echo $equipment['image']; ?>" alt="Equipment Image">
+        <h4><b>Equipment Type:</b> <b class="green-text"><?php echo $equipment['equipment_type']; ?></b></h4>
+        <div class="equipment-description">
+            <p><b>Description:</b> <?php echo $equipment['description']; ?></p>
         </div>
-        <?php endforeach; ?>
+        <p><b>Rental Cost:</b></p>
+        <ul>
+            <li>Per Hour: $<?php echo $equipment['rental_cost_per_hour']; ?></li>
+            <li>Per Day: $<?php echo $equipment['rental_cost_per_day']; ?></li>
+        </ul>
+        <p><b>Availability:</b></p>
+        <ul>
+            <p><b>Available From:</b> <?php echo $equipment['from_date']; ?></p>
+            <p><b>Available To:</b> <?php echo $equipment['to_date']; ?></p>
+
+        </ul>
+
+        <?php
+        if (isset($_SESSION['email']) && $_SESSION['email'] === $equipment['owner_id']) {
+            echo '<div class="alert alert-info" role="alert">';
+            echo 'You are viewing your own equipment.';
+            echo '</div>';
+        } else {
+            $isAvailable = ($equipment['status_owner'] === null || $equipment['status_owner'] == 'Accepted');
+
+            if ($isAvailable) {
+                echo '<a class="btn btn-success" href="Book_Now.php?owner_id=' . $equipment['owner_id'] . '&equipment_id=' . $equipment['equipment_id'] . '">Book Now</a>';
+
+            } else {
+                echo '<div class="disabled-card">';
+                echo '<button class="btn btn-success" disabled>Not Available</button>';
+                echo '</div>';
+            }
+        }
+        ?>
+    </div>
+<?php endforeach; ?>
+
     </div>
 </body>
 

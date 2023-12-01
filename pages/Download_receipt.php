@@ -1,23 +1,26 @@
 <?php
+$db = mysqli_connect("localhost", "root", "", "farmer") or die('connection failed');
 
-$db = mysqli_connect("localhost", "root", "", "farmer") or die("Connection Failed");
+$Payment_id= $_GET['id']; 
 
-$transaction_id = $_POST['razorpayPaymentId']; // Assuming you receive the transaction ID correctly via POST
+$sql = "select * from online_payment where requestId='$Payment_id'";
 
-$sql = "SELECT * FROM online_payment WHERE razorpayPaymentId = '$transaction_id'";
-$result = $db->query($sql);
+$result = mysqli_query($db,$sql) or die ("connection failed in card")  ;
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $id = $row['id'];
+    $id = $row['requestId'];
     $amount = $row['total_cost'];
     $customer_id = $row['customer_id'];
+    $owner_id = $row['owner_id'];
+    $razorpayPaymentId = $row['razorpayPaymentId'];
+
 } else {
     echo "Transaction not found in the database.";
-    exit; // Exit script if the transaction is not found.
+    exit; 
 }
 
-require_once('tcpdf/tcpdf.php'); // Include TCPDF library
+require_once('../PDF/tcpdf.php'); // Include TCPDF library
 
 $pdf = new TCPDF();
 
@@ -31,17 +34,17 @@ $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 
 $pdf->AddPage();
 
-$pdf->SetFont('Bookman old style', '', 12);
+$pdf->SetFont('helvetica', '', 12);
 $pdf->Cell(0, 30, 'Receipt', 0, 1, 'C');
-$pdf->Cell(0, 10, 'Transaction ID: ' . $transaction_id, 0, 1); // Use the correct variable
+$pdf->Cell(0, 10, 'Transaction ID: ' . $razorpayPaymentId, 0, 1); 
 $pdf->Cell(0, 10, 'Customer ID: ' . $customer_id, 0, 1);
+$pdf->Cell(0, 10, 'Owner ID: ' . $owner_id, 0, 1);
 $pdf->Cell(0, 10, 'Amount Paid: Rs. ' . $amount, 0, 1);
 
-$pdfFilePath = 'c:\xampp\htdocs\Receipt\Receipts\receipt.pdf'; // Update the file path as needed
+$pdfFilePath = 'c:\xampp\htdocs\Receipt\Receipts\receipt.pdf'; 
 $pdf->Output($pdfFilePath, 'D');
 
 $pdf->Close();
 
-// Provide a link to download the PDF
 echo '<a href="path/to/receipt.pdf" download>Download Receipt (PDF)</a>';
 ?>

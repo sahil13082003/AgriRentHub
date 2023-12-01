@@ -2,18 +2,33 @@
 include '../components/Links.php';
 include '../components/Navbar.php';
 
-$id = $_GET['id'];
+// var_dump($_GET);
 
+$id = $_GET['owner_id'];
+
+$equipment_id = isset($_GET['equipment_id']) ? $_GET['equipment_id'] : null;
+
+if ($equipment_id === null) {
+    // Handle the case where equipment_id is not present in the URL
+    echo "Error: Equipment ID is missing.";
+    // You may redirect the user or display an error message as needed
+    exit();
+}
+
+
+//$totalPrice = $_GET['totalPrice'];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $address = $_POST['address'];
     $email = $_POST['email'];
     $message = $_POST['message'];
+    $fromDate = $_POST['fromDate'];
     $rentalTime = $_POST['rentalTime'];
     $rentalDuration = $_POST['rentalDuration'];
     $acceptTerms = isset($_POST['acceptTerms']) ? 1 : 0;
-    
+    //$totalPrice = $_POST['totalPrice'];
     $customer_id = $_SESSION['email'];
+
 
     $db = mysqli_connect("localhost", "root", "", "farmer");
 
@@ -22,34 +37,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
+    $fetchEquipmentDetailsQuery = "SELECT equipment_id, equipment_type, image, owner_id FROM equipment WHERE equipment_id='$equipment_id' and owner_id='$id'";
 
-    $fetchEquipmentCostQuery = "SELECT rental_cost_per_hour, rental_cost_per_day FROM equipment ";
-    $result = mysqli_query($db, $fetchEquipmentCostQuery);
-
-    if ($row = mysqli_fetch_assoc($result)) {
-        $rentalCostPerHour = $row['rental_cost_per_hour'];
-        $rentalCostPerDay = $row['rental_cost_per_day'];
+    $equipmentResult = mysqli_query($db, $fetchEquipmentDetailsQuery);
+    
+    if ($equipmentRow = mysqli_fetch_assoc($equipmentResult)) {
+        $equipmentType = $equipmentRow['equipment_type'];
+        $equipmentImage = $equipmentRow['image'];
+        $equipmentid = $equipmentRow['equipment_id'];
+    
         
-     // Echo the rental cost per day into a JavaScript variable without single quotes
-echo '<script>var rentalCostPerDay = ' . $rentalCostPerDay . ';</script>';
+        $fetchEquipmentCostQuery = "SELECT rental_cost_per_hour, rental_cost_per_day FROM equipment WHERE equipment_id='$equipmentid'";
+        $result = mysqli_query($db, $fetchEquipmentCostQuery);
+    
+        if ($row = mysqli_fetch_assoc($result)) {
+            $rentalCostPerHour = $row['rental_cost_per_hour'];
+            $rentalCostPerDay = $row['rental_cost_per_day'];
+                
+            $totalPrice = 0;
+            if ($rentalTime === 'perHour') {
+                $totalPrice = $rentalDuration * $rentalCostPerHour;
+            } elseif ($rentalTime === 'perDay') {
+                $totalPrice = $rentalDuration * $rentalCostPerDay;
+            }
 
+            $fetchEquipmentDetailsQuery = "SELECT from_date, to_date FROM equipment WHERE equipment_id='$equipmentid'";
+            $equipmentResult = mysqli_query($db, $fetchEquipmentDetailsQuery);
 
+            if ($equipmentRow = mysqli_fetch_assoc($equipmentResult)) {
+                $from_date = $equipmentRow['from_date'];
+                $to_date = $equipmentRow['to_date'];
+    
+            if (!empty($from_date) && !empty($to_date)) {
+        // Check availability based on the selected dates                                     // 30-11          28-10            3           9-11
+       // $checkBookingAvailabilityQuery = "SELECT * FROM equipment WHERE owner_id='$id' AND ('$fromDate' >= $from_date AND '$fromDate' + '$rentalDuration' <= $to_date)";   + INTERVAL $rentalDuration DAY
+                                                                                                            // 4-11                            12-11                                    4-11                                            22-11
+        $checkBookingAvailabilityQuery = "SELECT * FROM equipment WHERE owner_id='$id' AND !((STR_TO_DATE('$fromDate', '%Y-%m-%d') >= STR_TO_DATE('$from_date', '%Y-%m-%d')) AND (STR_TO_DATE('$fromDate', '%Y-%m-%d')  <= STR_TO_DATE('$to_date', '%Y-%m-%d')))";
 
-$fetchEquipmentDetailsQuery = "SELECT equipment_type, image FROM equipment WHERE owner_id='$id'";
-$equipmentResult = mysqli_query($db, $fetchEquipmentDetailsQuery);
+        $existingBookings = mysqli_query($db, $checkBookingAvailabilityQuery);
 
-if ($equipmentRow = mysqli_fetch_assoc($equipmentResult)) {
-    $equipmentType = $equipmentRow['equipment_type'];
-    $equipmentImage = $equipmentRow['image'];
-
-    $sql = "INSERT INTO purchase_requests (owner_id, customer_id, name, address, email, message, rental_time, rental_duration, image, equipment_type, terms_accepted)
-            VALUES ('$id', '$customer_id', '$name', '$address', '$email', '$message', '$rentalTime', '$rentalDuration', '$equipmentImage', '$equipmentType', '$acceptTerms')";
-   
-        if (mysqli_query($db, $sql)) {
-            echo "<script>alert('Your purchase request has been submitted successfully.');</script>";
-            echo "<script> window.location.replace('http://localhost/mini-Project/pages/Booking_Details.php');</script>";
+        if (mysqli_num_rows($existingBookings) > 0) {
+            echo "<script>alert('Equipment is not available for the selected dates. Please choose different dates.');</script>";
         } else {
-            echo "Error: " . $sql . "<br>" . mysqli_error($db);
+
+            $sql = "INSERT INTO purchase_requests (owner_id, customer_id, name, address, email, message, fromDate, rental_time, rental_duration, image, equipment_type, total_cost, terms_accepted, equipment_id)
+        VALUES ('$id', '$customer_id', '$name', '$address', '$email', '$message', '$fromDate', '$rentalTime', '$rentalDuration', '$equipmentImage', '$equipmentType', '$totalPrice', '$acceptTerms', '$equipmentid')";
+
+            if (mysqli_query($db, $sql)) {
+                echo '<script> alert(" Total Price : '.$totalPrice.' ");</script>';
+                
+                echo "<script>alert('Your purchase request has been submitted successfully.');</script>";
+
+                echo "<script> window.location.replace('http://localhost/mini-Project/pages/Booking_Details.php?equipment_id={$equipmentid}');</script>";
+                
+                exit();
+
+            } else {
+                echo "Error: " . $sql . "<br>" . mysqli_error($db);
+            }
         }
     } else {
         echo "Equipment not found or rental cost details are missing.";
@@ -57,6 +102,8 @@ if ($equipmentRow = mysqli_fetch_assoc($equipmentResult)) {
 
     mysqli_close($db);
 }
+        }
+    }
 }
 ?>
 
@@ -182,7 +229,7 @@ if ($equipmentRow = mysqli_fetch_assoc($equipmentResult)) {
             </div>
 
             <div class="form-group">
-                <label for="totalPrice">Total Price:</label>
+                <label for="totalPrice"></label>
                 <div id="totalPrice"></div>
             </div>
 
@@ -193,36 +240,15 @@ if ($equipmentRow = mysqli_fetch_assoc($equipmentResult)) {
             <input type="hidden" name="owner_id" value="<?php echo $ownerID; ?>">
             <input type="hidden" name="customer_id" value="<?php echo $email; ?>">
 
+            <!-- Add this hidden input inside your form -->
+            <input type="hidden" name="equipment_id" value="<?php echo htmlspecialchars($equipment_id, ENT_QUOTES, 'UTF-8'); ?>">
+
+
             <div class="form-group">
                 <input type="submit" value="Submit">
             </div>
         </form>
     </div>
-
-    <script>
-    // Get the input element and the totalPrice div element
-    var rentalDurationInput = document.getElementById("rentalDuration");
-    var totalPriceDiv = document.getElementById("totalPrice");
-
-    // Add an event listener to the input element
-    rentalDurationInput.addEventListener("input", calculateTotalPrice);
-
-    function calculateTotalPrice() {
-        // Get the input field's value
-        var rentalDuration = parseFloat(rentalDurationInput.value);
-
-        // Check if the input is a valid number
-        console.log(rentalDuration)
-        // Multiply the input by 100
-        var totalPrice = rentalDuration * rentalCostPerDay;
-        console.log(totalPrice)
-
-        // Display the result in the "totalPrice" div
-        totalPriceDiv.textContent = "Total Price: $" + totalPrice.toFixed(2);
-
-    }
-    </script>
-
 
 </body>
 

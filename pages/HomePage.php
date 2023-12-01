@@ -91,7 +91,7 @@ include '../components/navbar.php';
 <!-- Contact Us -->
 
 
-<div class="diffSection" id="contactus_section">
+<div class="diffSection" id="contact">
 		<center><p style="font-size: 50px; padding: 80px; color:#175b1e ">Contact Us</p></center>
 		<div class="back-contact">
 			<div class="cc">

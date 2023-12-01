@@ -3,7 +3,6 @@ require('config.php');
 require('Razorpay.php');
 require_once 'common.php';
 session_start();
-
 if (!isset($_SESSION['email'])) {
   ?>
 <script>
@@ -14,8 +13,6 @@ window.location.href = '../HomePage.php';
   }
   $service_id= $_GET['id']; 
 
-  echo  $service_id;
-  
   $db = mysqli_connect("localhost", "root", "", "farmer") or die('connection failed');
 
   $sql = "select * from purchase_requests where owner_id = '$service_id' ";
@@ -24,23 +21,17 @@ $result = mysqli_query($db,$sql) or die ("connection failed in card")  ;
 
 if(mysqli_num_rows($result) >0){
   $row=mysqli_fetch_assoc($result);
-  // this is inform of serviceProvider means to
    $charge=$row['total_cost'];
    $customer=$row['customer_id'];
    $_SESSION['service_email']=$row['owner_id'];
-  //  $_SESSION['service_name']=$row['equipment_type'];
    $_SESSION['service_id']=$row['requestID'];
    $_SESSION['service_charge']=$row['total_cost'];
-
-
-  $service_email=$row['owner_id']; 
+   $_SESSION['requestID']=$row['requestID'];
+   $service_email=$row['owner_id']; 
 }
 else{
   header("Location: http://localhost/MiniProject/Pages/HomePage.php");
 }
-  
-  
-
   
 use Razorpay\Api\Api;
 $onlinePay = new STUDENT();
