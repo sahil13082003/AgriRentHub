@@ -15,7 +15,7 @@ window.location.href = '../HomePage.php';
 
   $db = mysqli_connect("localhost", "root", "", "farmer") or die('connection failed');
 
-  $sql = "select * from purchase_requests where owner_id = '$service_id' ";
+  $sql = "select * from purchase_requests where owner_id = '$service_id'";
 
 $result = mysqli_query($db,$sql) or die ("connection failed in card")  ;
 
@@ -35,7 +35,7 @@ else{
   
 use Razorpay\Api\Api;
 $onlinePay = new STUDENT();
-$sql9 = $DB_con->prepare( "select max(pID) as pID from onlinepayment" );
+$sql9 = $DB_con->prepare("select max(pID) as pID from onlinepayment");
 $sql9->execute();
 $result9 = $sql9->fetch( PDO::FETCH_ASSOC ) ;
 $pID = $result9['pID'];

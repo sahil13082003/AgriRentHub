@@ -1,7 +1,7 @@
 <?php
 include('smtp/PHPMailerAutoload.php');
 
-echo smtp_mailer('sahilgolhar7@gmail.com','Payment Successfully Done','Your payment has been done successfully. Kindly check your login.');
+echo smtp_mailer('sahilgolhar7@gmail.com','Payment Successfully Done','Your payment has been done successfully. Kindly check your login.');
 function smtp_mailer($to,$subject, $msg){
 	$mail = new PHPMailer(); 
 	$mail->IsSMTP(); 
