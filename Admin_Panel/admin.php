@@ -12,7 +12,6 @@ if ($countResult) {
     $totalUsers = 0;
 }
 
-// Total no. of Equipments Added into the website 
 $countQuery = "SELECT COUNT(*) as totalEquipments FROM equipment";
 $countResult = mysqli_query($db, $countQuery);
 
@@ -23,7 +22,6 @@ if ($countResult) {
     $totalEquipments = 0;
 }
 
-// Total no. of Booking 
 $countQuery = "SELECT COUNT(*) as total_bookings FROM purchase_requests";
 $countResult = mysqli_query($db, $countQuery);
 
@@ -88,9 +86,9 @@ mysqli_close($db);
              <div class="list-group list-group-flush my-3">
                  <a href="#" class="list-group-item list-group-item-action bg-transparent second-text active"><i
                          class="fas fa-tachometer-alt me-2 "></i>Dashboard</a>
-                 <!-- <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                  <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                          class="fas fa-project-diagram me-2"></i>Projects</a>
-                 <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                 <!--<a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                          class="fas fa-chart-line me-2"></i>Analytics</a>
                  <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                          class="fas fa-paperclip me-2"></i>Reports</a>

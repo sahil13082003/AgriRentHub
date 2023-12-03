@@ -21,7 +21,7 @@ $query = "SELECT pr.*
           FROM purchase_requests pr
           JOIN equipment e ON pr.equipment_id = e.equipment_id
           WHERE pr.customer_id = '$customer_id'
-          ORDER BY pr.requestID ";
+          ORDER BY pr.requestID ASC";
 
 
 $result = mysqli_query($db, $query);

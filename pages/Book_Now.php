@@ -9,14 +9,12 @@ $id = $_GET['owner_id'];
 $equipment_id = isset($_GET['equipment_id']) ? $_GET['equipment_id'] : null;
 
 if ($equipment_id === null) {
-    // Handle the case where equipment_id is not present in the URL
+    
     echo "Error: Equipment ID is missing.";
-    // You may redirect the user or display an error message as needed
     exit();
 }
 
 
-//$totalPrice = $_GET['totalPrice'];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $address = $_POST['address'];
@@ -26,7 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $rentalTime = $_POST['rentalTime'];
     $rentalDuration = $_POST['rentalDuration'];
     $acceptTerms = isset($_POST['acceptTerms']) ? 1 : 0;
-    //$totalPrice = $_POST['totalPrice'];
     $customer_id = $_SESSION['email'];
 
 
@@ -132,7 +129,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         max-width: 550px;
         width: 90%;
         margin: 50px auto;
-        /* Center the container */
     }
 
     .container h2 {
@@ -240,7 +236,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="hidden" name="owner_id" value="<?php echo $ownerID; ?>">
             <input type="hidden" name="customer_id" value="<?php echo $email; ?>">
 
-            <!-- Add this hidden input inside your form -->
             <input type="hidden" name="equipment_id" value="<?php echo htmlspecialchars($equipment_id, ENT_QUOTES, 'UTF-8'); ?>">
 
 
